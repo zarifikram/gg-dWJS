@@ -45,7 +45,9 @@ walkjump_train
 ```
 
 #### Discriminator model
-Change `data`, `model` in `train.yaml`
+First download the binarized MNIST dataset with labels from [Kaggle](https://www.kaggle.com/datasets/albertaillet/binarized-mnist-larochelle-et-al) and save it in `data/mnist_with_labels`.
+
+Next, change `data`, `model` in `train.yaml`
 ```
 -  data:  mnist_labels.yaml
 -  model:  mnist_classifier.yaml

@@ -1,0 +1,45 @@
+defaults:
+    - _self_
+    - setup: default
+
+model:
+  _target_: walkjump.cmdline.utils.instantiate_model_for_sample_mode
+  sample_mode_model_cfg:
+    model_type: denoise
+    checkpoint_path: checkpoints/poas_check/epoch=19-step=404397-val_loss=0.0040.ckpt
+    denoise_path: 
+    guide_path: checkpoints/ab_beta_perc_check/last.ckpt
+    guide_path2: checkpoints/ab_instability_index_check/last.ckpt
+
+guidance: true
+langevin:
+  sigma: 1.0
+  delta: 0.5
+  lipschitz: 1.0
+  friction: 1.0
+  steps: 40
+
+# sample for MNIST
+# designs:
+#   chunksize: 8
+#   num_tokens: 2
+#   length: 784
+#   output_csv: samples.csv
+#   redesign_regions: null
+#   seeds: denovo
+#   num_samples: 100
+#   limit_seeds: 10
+
+# sample for poas
+designs:
+  chunksize: 8
+  num_tokens: 21
+  length: 297
+  output_csv: ab_gg-dWJS_beta_ii.csv
+  redesign_regions: null
+  seeds: denovo
+  num_samples: 100
+  limit_seeds: 10
+  
+device: null
+dryrun: false

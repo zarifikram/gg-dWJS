@@ -1,0 +1,7 @@
+_target_: walkjump.data.MNISTDataModule
+
+train_data_path: "data/binarized_mnist_train.amat"
+test_data_path: "data/binarized_mnist_test.amat"
+val_data_path: "data/binarized_mnist_valid.amat"
+batch_size: 64
+num_workers: 32

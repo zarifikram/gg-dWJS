@@ -1,0 +1,6 @@
+_target_: walkjump.data.MNISTWithLabelsDataModule
+
+data_path: "data/mnist_with_labels/"
+
+batch_size: 64
+num_workers: 32
