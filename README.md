@@ -29,7 +29,6 @@ conda activate wj
 ## Discrete MNIST task
 <!-- mnist samples -->
 ![mnist](assets/gg-dWJS_samples.png)
-
 ### Train
 ####  Denoise model
 Change `data` in `train.yaml`
@@ -79,7 +78,9 @@ Finally use [PyTorch-FID](https://pypi.org/project/pytorch-fid/#:~:text=FID%20is
 
 
 ## Antibody task
-
+```
+QVQLQES-GPGLVKPSETLSLTCTVSG-GSIST-----YNWNWIRQSPGKGLEWIGEIYH----SGSTYYNPSLKSRVTLSVDTSKKQFSLKLTSVTAADTAIYYCARLGPYYSY--S------------SYSRGFDVWGRGTLVTVSSSYVLTQP-PSVSVSPGQTATLTCGLST--NLDN-----YHVHWYQQKPGQAPRTLIYR--------ADTRLSGVPERFSGSKSG--DTATLTITGVQAGDEGDYYCQLSDSG----------------------GSVVFGTGTKVTVL
+```
 ### Train
 ####  Denoise model
 Change `data` in `train.yaml`
