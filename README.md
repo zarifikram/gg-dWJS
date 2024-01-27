@@ -9,6 +9,9 @@ PyTorch implementation for our paper
 
 Anonymous authors.
 
+<!-- fig from assets -->
+![gg-dWJS](assets/process.png)
+
 We train discriminators on the smoothed data manifold :pill: and use its gradient to guide the walk and the jump step in dWJS. We call our method gradient-guided discrete Walk-Jump Sampling (gg-dWJS)  :feet: :walking: :running:
 
 ## Setup
@@ -24,6 +27,9 @@ conda activate wj
 ```
 
 ## Discrete MNIST task
+<!-- mnist samples -->
+![mnist](assets/gg-dWJS_samples.png)
+
 ### Train
 ####  Denoise model
 Change `data` in `train.yaml`
