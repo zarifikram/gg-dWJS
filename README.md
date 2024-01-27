@@ -83,6 +83,13 @@ Finally use [PyTorch-FID](https://pypi.org/project/pytorch-fid/#:~:text=FID%20is
 ```
 QVQLQES-GPGLVKPSETLSLTCTVSG-GSIST-----YNWNWIRQSPGKGLEWIGEIYH----SGSTYYNPSLKSRVTLSVDTSKKQFSLKLTSVTAADTAIYYCARLGPYYSY--S------------SYSRGFDVWGRGTLVTVSSSYVLTQP-PSVSVSPGQTATLTCGLST--NLDN-----YHVHWYQQKPGQAPRTLIYR--------ADTRLSGVPERFSGSKSG--DTATLTITGVQAGDEGDYYCQLSDSG----------------------GSVVFGTGTKVTVL
 ```
+<div style="display: flex; justify-content: center;">
+    <img src="assets/antibody_vis/ab_1.png" width="250" />
+    <img src="assets/antibody_vis/ab_2.png" width="220" />
+    <img src="assets/antibody_vis/ab_3.png" width="200" />
+    <img src="assets/antibody_vis/ab_4.png" width="200" />
+</div>
+
 ### Train
 ####  Denoise model
 Change `data` in `train.yaml`
