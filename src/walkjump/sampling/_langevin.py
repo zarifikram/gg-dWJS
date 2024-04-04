@@ -89,7 +89,10 @@ def get_label_gradient_wrt_x(guide_model, x, y):
     torch.set_grad_enabled(True)
     # print(f"X shape : {x.shape}")
     x = Variable(x, requires_grad=True)
-    log_p_y = guide_model.model(x)
+    c = torch.tensor([0, 1]).float().to(x.device)
+    # c should have the same batch size as x
+    c = c.repeat(x.shape[0], 1)
+    log_p_y = guide_model.model(x, c)
     log_p_y = log_p_y[:, y] # select the log probability of the correct label
     ones = torch.ones_like(log_p_y)
 

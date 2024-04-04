@@ -1,5 +1,5 @@
 defaults:
-  - model_cfg/arch: convnet
+  - model_cfg/arch: resnet
   - model_cfg/hyperparameters: denoise_hp
   - _self_
 

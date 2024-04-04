@@ -8,8 +8,9 @@ model:
     model_type: denoise
     checkpoint_path: checkpoints/poas_check/epoch=19-step=404397-val_loss=0.0040.ckpt
     denoise_path: 
-    guide_path: checkpoints/ab_beta_perc_check/last.ckpt
-    guide_path2: checkpoints/ab_instability_index_check/last.ckpt
+    pc_guide_path: checkpoints/ab_singlevalue_ar_beta/last.ckpt
+    guide_path: 
+    guide_path2: 
 
 guidance: true
 langevin:
@@ -35,7 +36,7 @@ designs:
   chunksize: 8
   num_tokens: 21
   length: 297
-  output_csv: ab_gg-dWJS_beta_ii.csv
+  output_csv: samples/ab_mo-gg-dWJS_arbeta_0_1.csv
   redesign_regions: null
   seeds: denovo
   num_samples: 100

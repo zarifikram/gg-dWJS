@@ -54,10 +54,37 @@ class AbWithLabelDataset(Dataset):
         row = self.df.loc[index]
         tensor_h = token_string_to_tensor(row.HeavyAA_aligned, self.alphabet)
         tensor_l = token_string_to_tensor(row.LightAA_aligned, self.alphabet)
-        label = torch.tensor(row.instability_index).float()
+        label = torch.tensor(row.single_value).float()
 
         return torch.cat([tensor_h, tensor_l]), label
 
+@dataclass
+class PCAbWithLabelDataset(Dataset):
+    df: pd.DataFrame
+    alphabet_or_token_list: InitVar[LabelEncoder | list[str]] = ALPHABET_AHO
+    alphabet: LabelEncoder = field(init=False)
+
+    def __post_init__(self, alphabet_or_token_list: LabelEncoder | list[str]):
+        self.alphabet = (
+            alphabet_or_token_list
+            if isinstance(alphabet_or_token_list, LabelEncoder)
+            else LabelEncoder().fit(alphabet_or_token_list)
+        )
+        self.df.reset_index(drop=True, inplace=True)
+
+    def __len__(self) -> int:
+        return len(self.df)
+
+    def __getitem__(self, index: int) -> torch.Tensor:
+        row = self.df.loc[index]
+        tensor_h = token_string_to_tensor(row.HeavyAA_aligned, self.alphabet)
+        tensor_l = token_string_to_tensor(row.LightAA_aligned, self.alphabet)
+        w1, w2 = row.w1, row.w2
+        condition = torch.tensor([w1, w2]).float()
+        label = torch.tensor(row.single_value).float()
+
+        return torch.cat([tensor_h, tensor_l]), condition, label
+    
 @dataclass
 class MNISTDataset(Dataset):
     data: np.ndarray

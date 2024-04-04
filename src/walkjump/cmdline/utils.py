@@ -8,7 +8,7 @@ from omegaconf import DictConfig
 
 from walkjump.constants import ALPHABET_AHO, LENGTH_FV_HEAVY_AHO, LENGTH_FV_LIGHT_AHO, RANGES_AHO, TOKENS_AHO
 from walkjump.data import AbDataset
-from walkjump.model import DenoiseModel, NoiseEnergyModel, MNISTClassifierModel, AbDiscriminatorModel
+from walkjump.model import DenoiseModel, NoiseEnergyModel, MNISTClassifierModel, AbDiscriminatorModel, PCAbDiscriminatorModel
 from walkjump.utils import random_discrete_seeds, token_string_from_tensor
 
 model_typer = {
@@ -87,6 +87,17 @@ def instantiate_model_for_sample_mode(
             ),
         )
         model.guide_model = AbDiscriminatorModel.load_from_checkpoint(sample_mode_model_cfg.guide_path)
+        model.guide_model.eval()
+        model.guide_model.training = False
+
+    if isinstance(model, DenoiseModel) and sample_mode_model_cfg.pc_guide_path is not None:
+        print(
+            "[instantiate_model_for_sample_mode] (model.guide_model)",
+            _LOG_MSG_INSTANTIATE_MODEL.format(
+                model_type="guide", checkpoint_path=sample_mode_model_cfg.pc_guide_path
+            ),
+        )
+        model.guide_model = PCAbDiscriminatorModel.load_from_checkpoint(sample_mode_model_cfg.pc_guide_path)
         model.guide_model.eval()
         model.guide_model.training = False
 

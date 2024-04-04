@@ -3,7 +3,7 @@ import torch
 from lightning.pytorch import LightningModule
 from omegaconf import DictConfig
 
-from walkjump.data import AbBatch, MNISTWithLabelsBatch, AbWithLabelBatch
+from walkjump.data import AbBatch, PCAbWithLabelBatch, MNISTWithLabelsBatch, AbWithLabelBatch
 
 _DEFAULT_TRAINING_PARAMETERS = {
     "sigma": 1.0,
@@ -179,6 +179,57 @@ class DiscriminatorModel(LightningModule):
         return loss
 
     def validation_step(self, batch: AbWithLabelBatch, batch_idx: int) -> torch.Tensor:
+        loss = self.compute_loss(batch)
+        batch_size = batch.batch_tensor.size(0)
+        self.log("val_loss", loss, sync_dist=True, batch_size=batch_size, rank_zero_only=True)
+        return loss
+
+    def compute_loss(self, batch: AbBatch) -> torch.Tensor:
+        raise NotImplementedError
+    
+class PreferenceConditionalDiscriminatorModel(LightningModule):
+    needs_gradients: bool = False
+
+    def __init__(self, model_cfg: DictConfig):
+        super().__init__()
+        self.arch_cfg = model_cfg.arch
+        self.training_cfg = model_cfg.get("hyperparameters") or DictConfig(
+            _DEFAULT_TRAINING_PARAMETERS
+        )
+        self.sigma = self.training_cfg.sigma
+
+        self.model = hydra.utils.instantiate(self.arch_cfg)
+        self.save_hyperparameters(logger=False)
+
+    def forward(self, x: torch.Tensor, preferences: torch.Tensor) -> torch.Tensor:
+        return self.model(x, preferences)
+
+    def configure_optimizers(self):
+        opt = torch.optim.AdamW(
+            self.parameters(), lr=self.training_cfg.lr, weight_decay=self.training_cfg.weight_decay
+        )
+
+        return {
+            "optimizer": opt,
+            "lr_scheduler": {
+                "scheduler": torch.optim.lr_scheduler.LinearLR(
+                    opt,
+                    start_factor=self.training_cfg.lr_start_factor,
+                    end_factor=1.0,
+                    total_iters=self.training_cfg.warmup_batches,
+                ),
+                "frequency": 1,
+                "interval": "step",
+            },
+        }
+
+    def training_step(self, batch: PCAbWithLabelBatch, batch_idx: int) -> torch.Tensor:
+        loss = self.compute_loss(batch)
+        batch_size = batch.batch_tensor.size(0)
+        self.log("train_loss", loss, sync_dist=True, batch_size=batch_size, rank_zero_only=True)
+        return loss
+
+    def validation_step(self, batch: PCAbWithLabelBatch, batch_idx: int) -> torch.Tensor:
         loss = self.compute_loss(batch)
         batch_size = batch.batch_tensor.size(0)
         self.log("val_loss", loss, sync_dist=True, batch_size=batch_size, rank_zero_only=True)

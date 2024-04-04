@@ -1,5 +1,5 @@
 defaults:
-  - model_cfg/arch: bytenet
+  - model_cfg/arch: unet
   - model_cfg/hyperparameters: denoise_hp
   - _self_
 

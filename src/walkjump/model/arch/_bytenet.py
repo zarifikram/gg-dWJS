@@ -321,3 +321,73 @@ class ByteNetMLPArch(nn.Module):
         e = self.mlp(e)
         
         return e
+    
+class PCByteNetMLPArch(nn.Module):
+    def __init__(
+        self,
+        d_model: int,
+        n_layers: int,
+        n_cond: int,
+        kernel_size: int,
+        max_dilation: int,
+        dropout: float = 0.0,
+        slim: bool = True,
+        activation: str = "silu",
+        rank=None,
+        n_tokens: int = 21,
+        final_layernorm: bool = True,
+    ):
+        super().__init__()
+        self.embedder = ByteNet(
+            n_tokens,
+            d_model,
+            n_layers,
+            kernel_size,
+            max_dilation,
+            dropout=dropout,
+            slim=slim,
+            activation=activation,
+            rank=rank,
+        )
+        self.decoder: nn.Linear | PositionFeedForward
+        self.last_norm: nn.LayerNorm | nn.Identity
+        self.decoder = PositionFeedForward(d_model, n_tokens)
+
+        if final_layernorm:
+            self.last_norm = nn.LayerNorm(d_model)
+        else:
+            self.last_norm = nn.Identity()
+
+        # self.bblock = ByteNetBlock(d_in = d_model, d_h = 8, d_out = 1, kernel_size=kernel_size)
+        # use mask1d to get from 297 x 21 to 297 x 8 -> 297 x 1
+        self.conv= nn.Sequential(
+            nn.Conv1d(n_tokens, 8, kernel_size=kernel_size, padding=1),
+            nn.LeakyReLU(),
+            nn.Conv1d(8, 1, kernel_size=kernel_size, padding=1),
+            nn.LeakyReLU(),
+        )
+
+        # now some mlp 297+num_conds -> 512 -> 256 -> 128 -> 1 using leakyReLU
+        self.mlp = nn.Sequential(
+            nn.Linear(297+n_cond, 512),
+            nn.LeakyReLU(),
+            nn.Linear(512, 256),
+            nn.LeakyReLU(),
+            nn.Linear(256, 128),
+            nn.LeakyReLU(),
+            nn.Linear(128, 1),
+        )
+
+    def forward(self, x: torch.Tensor, preferences: torch.Tensor) -> torch.Tensor:
+        # size of preferences should be (batch_size, n_cond)
+        input_mask = (x == 0).all(-1)
+        e = self.embedder(x, input_mask=input_mask)
+        e = self.last_norm(e)
+        e = self.decoder(e)
+        e = self.conv(e.transpose(1,2))
+
+        e = e.squeeze()
+        e = torch.cat((e, preferences), dim=1)
+        e = self.mlp(e)
+        
+        return e

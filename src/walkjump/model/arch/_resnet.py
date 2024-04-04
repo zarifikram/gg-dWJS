@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class ConvNetArch(nn.Module):
+class ResNetArch(nn.Module):
     def __init__(self):
         super(ResNetArch, self).__init__()
         self.conv1 = nn.Conv2d(2, 32, 3, 1)

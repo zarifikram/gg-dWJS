@@ -1,7 +1,7 @@
 defaults:
   - _self_
   - data: poas_labels.yaml
-  - model: ab_discriminator.yaml
+  - model: pc_ab_discriminator.yaml
   - callbacks: default.yaml
   - logger: wandb.yaml
   - trainer: default.yaml

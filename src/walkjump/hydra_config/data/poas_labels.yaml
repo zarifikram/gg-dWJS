@@ -1,4 +1,4 @@
-_target_: walkjump.data.AbWithLabelDataModule
+_target_: walkjump.data.PCAbWithLabelDataModule
 
 csv_data_path: "data/poas_train.csv.gz"
 batch_size: 64
