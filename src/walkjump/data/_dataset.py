@@ -133,3 +133,27 @@ class MNISTWithLabelsDataset(Dataset):
         tensor_label = torch.tensor(label).long()
         assert(type(tensor_row) == torch.Tensor)
         return tensor_row, tensor_label
+
+@dataclass
+class HERWithLabelDataset(Dataset):
+    df: pd.DataFrame
+    alphabet_or_token_list: InitVar[LabelEncoder | list[str]] = ALPHABET_AHO
+    alphabet: LabelEncoder = field(init=False)
+
+    def __post_init__(self, alphabet_or_token_list: LabelEncoder | list[str]):
+        self.alphabet = (
+            alphabet_or_token_list
+            if isinstance(alphabet_or_token_list, LabelEncoder)
+            else LabelEncoder().fit(alphabet_or_token_list)
+        )
+        self.df.reset_index(drop=True, inplace=True)
+
+    def __len__(self) -> int:
+        return len(self.df)
+
+    def __getitem__(self, index: int) -> torch.Tensor:
+        row = self.df.loc[index]
+        tensor = token_string_to_tensor(row.AASeq, self.alphabet)
+        label = torch.tensor(row.AgClass).long()
+
+        return tensor, label

@@ -1,0 +1,6 @@
+_target_: walkjump.data.HERWithLabelDataModule
+
+csv_data_path: "data/HER2.csv"
+
+batch_size: 64
+num_workers: 32

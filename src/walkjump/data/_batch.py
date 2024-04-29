@@ -141,3 +141,32 @@ class MNISTWithLabelsBatch:
     @cached_property
     def y(self) -> torch.Tensor:
         return self.batch_labels.long()
+    
+@dataclass
+class HERWithLabelsBatch:
+    batch_tensor: torch.Tensor
+    batch_labels: torch.Tensor
+    """(b, L)-shaped tensor of sequences"""
+    vocab_size: int = len(TOKENS_AHO)
+
+    @classmethod
+    def from_tensor_pylist(
+        cls, inputs: list[torch.Tensor], vocab_size: int = len(TOKENS_AHO)
+    ) -> "PCAbWithLabelBatch":
+        data = []
+        labels = []
+        for x, c, y in inputs:
+            data.append(x)
+            labels.append(y)
+        packed_batch = torch.stack(data, dim=0)
+        packed_labels = torch.stack(labels, dim=0)
+        return cls(packed_batch, packed_labels, vocab_size=vocab_size)
+
+    @cached_property
+    def x(self) -> torch.Tensor:
+        one_hot_x = torch.nn.functional.one_hot(self.batch_tensor, num_classes=self.vocab_size).float()
+        return one_hot_x + isotropic_gaussian_noise_like(one_hot_x, 1)
+    
+    @cached_property
+    def y(self) -> torch.Tensor:
+        return self.batch_labels.float()
