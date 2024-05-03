@@ -8,7 +8,7 @@ from omegaconf import DictConfig
 
 from walkjump.constants import ALPHABET_AHO, LENGTH_FV_HEAVY_AHO, LENGTH_FV_LIGHT_AHO, RANGES_AHO, TOKENS_AHO
 from walkjump.data import AbDataset
-from walkjump.model import DenoiseModel, NoiseEnergyModel, MNISTClassifierModel, AbDiscriminatorModel, PCAbDiscriminatorModel
+from walkjump.model import DenoiseModel, NoiseEnergyModel, MNISTClassifierModel, AbDiscriminatorModel, PCAbDiscriminatorModel, HERClassifierModel
 from walkjump.utils import random_discrete_seeds, token_string_from_tensor
 
 model_typer = {
@@ -22,6 +22,7 @@ _LOG_MSG_INSTANTIATE_MODEL = "Loading {model_type} model from {checkpoint_path}"
 
 
 def instantiate_redesign_mask(redesign_regions: Iterable[str]) -> list[int]:
+    
     unrecognized_regions = set(redesign_regions) - set(RANGES_AHO.keys())
     assert not unrecognized_regions, _ERR_MSG_UNRECOGNIZED_REGION.format(
         regions=unrecognized_regions
@@ -32,7 +33,6 @@ def instantiate_redesign_mask(redesign_regions: Iterable[str]) -> list[int]:
         chain = region[0]
         aho_start, aho_end = RANGES_AHO[region]
         shift = LENGTH_FV_HEAVY_AHO * int(chain == "L")
-
         redesign_accumulator |= set(range(aho_start + shift, aho_end + shift))
 
     mask_idxs = sorted(
@@ -87,6 +87,17 @@ def instantiate_model_for_sample_mode(
             ),
         )
         model.guide_model = AbDiscriminatorModel.load_from_checkpoint(sample_mode_model_cfg.guide_path)
+        model.guide_model.eval()
+        model.guide_model.training = False
+
+    if isinstance(model, DenoiseModel) and sample_mode_model_cfg.her_guide_path is not None:
+        print(
+            "[instantiate_model_for_sample_mode] (model.guide_model)",
+            _LOG_MSG_INSTANTIATE_MODEL.format(
+                model_type="guide", checkpoint_path=sample_mode_model_cfg.her_guide_path
+            ),
+        )
+        model.guide_model = HERClassifierModel.load_from_checkpoint(sample_mode_model_cfg.her_guide_path)
         model.guide_model.eval()
         model.guide_model.training = False
 

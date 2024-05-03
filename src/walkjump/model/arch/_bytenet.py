@@ -322,7 +322,7 @@ class ByteNetMLPArch(nn.Module):
         
         return e
     
-class ByteNetMLPClassiferArch(nn.Module):
+class ByteNetMLPClassifierArch(nn.Module):
     def __init__(
         self,
         d_model: int,

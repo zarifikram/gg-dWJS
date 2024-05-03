@@ -26,6 +26,7 @@ def sample(cfg: DictConfig) -> bool:
         device = torch.device(cfg.device)
 
     mask_idxs = instantiate_redesign_mask(cfg.designs.redesign_regions or [])
+    
     print(f"Redesigning {len(mask_idxs)} positions")
     seeds = instantiate_seeds(cfg.designs)
     print(f"Number of seeds {len(seeds)}")

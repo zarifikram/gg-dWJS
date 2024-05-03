@@ -135,9 +135,10 @@ def jump(y: torch.Tensor, model: TrainableScoreModel, chunksize: int = 1, guidan
             xhat_chunk = model.xhat(y_chunk).cpu()
             torch.cuda.empty_cache()
             if guidance:
-                guide = get_label_gradient_wrt_x(model.guide_model, y_chunk, label) / pow(model.sigma, 2)
-                xhat_chunk = xhat_chunk + guide.cpu()
-                torch.cuda.empty_cache()
+                if hasattr(model, "guide_model"):
+                    guide = get_label_gradient_wrt_x(model.guide_model, y_chunk, label) / pow(model.sigma, 2)
+                    xhat_chunk = xhat_chunk + guide.cpu()
+                    torch.cuda.empty_cache()
                 # if guide_model2 exists, use it as well
                 if hasattr(model, "guide_model2"):
                     guide2 = get_label_gradient_wrt_x(model.guide_model2, y_chunk, label) / pow(model.sigma, 2)
@@ -159,11 +160,11 @@ def get_label_gradient_wrt_x(guide_model, x, y):
     torch.set_grad_enabled(True)
     # print(f"X shape : {x.shape}")
     x = Variable(x, requires_grad=True)
-    c = torch.tensor([0, 1]).float().to(x.device)
+    # c = torch.tensor([0, 1]).float().to(x.device)
     # c should have the same batch size as x
-    c = c.repeat(x.shape[0], 1)
+    # c = c.repeat(x.shape[0], 1)
 
-    log_p_y = guide_model.model(x, c)
+    log_p_y = guide_model.model(x)
 
     log_p_y = log_p_y[:, y] # select the log probability of the correct label
 
@@ -228,8 +229,8 @@ def walkjump(
     # print(f"Seed shape {seed.shape}")
     print(f"Seed tensor shape {seed_tensor.shape}")
     # keep original x in masked positions
-    if mask_idxs: 
-        seed_tensor_masked = seed_tensor[:, mask_idxs, :].clone()
+    # if mask_idxs: 
+    #     seed_tensor_masked = seed_tensor[:, mask_idxs, :].clone()
 
     assert delta < 1
 

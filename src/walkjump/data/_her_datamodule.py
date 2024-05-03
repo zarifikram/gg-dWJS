@@ -34,7 +34,7 @@ class HERWithLabelDataModule(LightningDataModule):
         match stage:
             case "fit" | "validate" | "test":
                 self.dataset = pd.read_csv(self.csv_data_path)
-
+                self.dataset = self.dataset[self.dataset.AgClass == 1]
             case _:
                 raise ValueError(f"Unreognized 'stage': {stage}")
         wandb.log({"dataset LENGTH": len(self.dataset)})

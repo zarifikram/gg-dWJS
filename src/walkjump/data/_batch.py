@@ -155,7 +155,7 @@ class HERWithLabelsBatch:
     ) -> "PCAbWithLabelBatch":
         data = []
         labels = []
-        for x, c, y in inputs:
+        for x, y in inputs:
             data.append(x)
             labels.append(y)
         packed_batch = torch.stack(data, dim=0)
@@ -165,7 +165,8 @@ class HERWithLabelsBatch:
     @cached_property
     def x(self) -> torch.Tensor:
         one_hot_x = torch.nn.functional.one_hot(self.batch_tensor, num_classes=self.vocab_size).float()
-        return one_hot_x + isotropic_gaussian_noise_like(one_hot_x, 1)
+        # return one_hot_x + isotropic_gaussian_noise_like(one_hot_x, 1) for noised discriminiator
+        return one_hot_x 
     
     @cached_property
     def y(self) -> torch.Tensor:

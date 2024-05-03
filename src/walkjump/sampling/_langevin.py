@@ -6,7 +6,7 @@ from torch.autograd import Variable
 from tqdm import trange
 
 from walkjump.model import TrainableScoreModel
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 _DEFAULT_SAMPLING_OPTIONS = {"delta": 0.5, "friction": 1.0, "lipschitz": 1.0, "steps": 100}
 
@@ -22,7 +22,7 @@ def sachsetal(
     guidance: bool = False,
     label: int = 0,
 ) -> tuple[torch.Tensor, torch.Tensor, list[torch.Tensor]]:
-
+    
     options = _DEFAULT_SAMPLING_OPTIONS | sampling_options  # overwrite
 
     delta, gamma, lipschitz = options["delta"], options["friction"], options["lipschitz"]
@@ -33,7 +33,7 @@ def sachsetal(
         else range(int(options["steps"]))
     )
     # we will plot 10 samples for each 4 steps.
-    fig, axes = plt.subplots(int(options["steps"] / 4), 10, figsize=(15, 10))
+    # fig, axes = plt.subplots(int(options["steps"] / 4), 10, figsize=(15, 10))
 
     with torch.set_grad_enabled(model.needs_gradients):
         u = pow(lipschitz, -1)  # inverse mass
@@ -54,8 +54,9 @@ def sachsetal(
             #         ax.axis("off")
             psi = model(y)
             if guidance:
-                guide = get_label_gradient_wrt_x(model.guide_model, y, label) / pow(model.sigma, 2)
-                psi = psi + guide
+                if hasattr(model, "guide_model"):
+                    guide = get_label_gradient_wrt_x(model.guide_model, y, label) / pow(model.sigma, 2)
+                    psi = psi + 5 * guide
 
                 # if guide_model2 exists, use it as well
                 if hasattr(model, "guide_model2"):
@@ -89,10 +90,10 @@ def get_label_gradient_wrt_x(guide_model, x, y):
     torch.set_grad_enabled(True)
     # print(f"X shape : {x.shape}")
     x = Variable(x, requires_grad=True)
-    c = torch.tensor([0, 1]).float().to(x.device)
+    # c = torch.tensor([0, 1]).float().to(x.device)
     # c should have the same batch size as x
-    c = c.repeat(x.shape[0], 1)
-    log_p_y = guide_model.model(x, c)
+    # c = c.repeat(x.shape[0], 1)
+    log_p_y = guide_model.model(x)
     log_p_y = log_p_y[:, y] # select the log probability of the correct label
     ones = torch.ones_like(log_p_y)
 
