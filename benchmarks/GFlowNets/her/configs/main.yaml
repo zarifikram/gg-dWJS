@@ -1,0 +1,101 @@
+defaults:
+  - override hydra/launcher: submitit_slurm
+
+user: ${oc.env:USER}
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/seed${seed}/${method}_ntrain${n_train_steps}_prb${prb}_mutation_${mutation}replay_size${replay_sample_size}gamma${gamma}augmented${augmented}ri${ri}_rp${random_policy}_fb${feedback}
+    # dir: outputs/${now:%Y-%m-%d}/seed${seed}/${method}_R0${R0}_dim${ndim}_H${horizon}_prb${prb}_mutation_${mutation}replay_size${replay_sample_size}buffer_size${replay_buf_size}num_pop${population_size}elite${num_elites}
+
+wandb: 0
+save_path: 'output/flow_insp_0.pkl.gz'
+device: cpu
+seed: 0
+progress: 1
+
+log_name: log
+method: fm
+lr: 1e-4
+opt: adam
+adam_beta1: 0.9
+adam_beta2: 0.999
+momentum: 0.9
+mbsize: 16
+train_to_sample_ratio: 1
+n_hid: 256
+n_layers: 2
+n_train_steps: 1000
+num_empirical_loss: 200000
+prb: true
+
+# Env
+func: corner
+R0: 0.001
+R1: 0.5
+R2: 2.
+horizon: 21
+ndim: 10
+
+# MCMC
+bufsize: 16
+
+# GFlowNet
+bootstrap_tau: 0.
+replay_strategy: "top_k"
+replay_sample_size: 0
+replay_buf_size: 1000
+exp_weight: 0.
+temp: 1.
+rand_pb: 0
+tlr: 1e-3
+zlr: 1e-1
+leaf_coef: 1.
+
+# Distributional GFlowNet
+ts: false
+N: 8
+quantile_dim: 256
+## risk distortion
+beta: neutral
+eta: 0.
+indist: false
+outdist: false
+
+# Evolution Guided GFlowNet
+population_size: 10 # 25 might be good
+num_eval_episodes: 10 # 1 seems just fine
+num_elites: 2
+tournament_size: 4
+mutation: true
+crossover_prob: 0.1
+mutation_prob: 0.9
+mutation_frac: 0.1
+gamma: 1
+super_mutation_strength: 10
+super_mutation_prob: 0.25 #0.25 is good
+reset_prob: 0.1
+weight_limit: 100000
+top_sample_perc: 0.5
+percentile: 0.9
+feedback: false
+
+
+
+# PPO
+ppo_num_epochs: 32
+ppo_epoch_size: 16
+ppo_clip: 0.2
+ppo_entropy_coef: 0.1
+clip_grad_norm: 0.
+
+# SAC
+sac_alpha: -1.0766 # 0.98*np.log(1/3)
+
+# tb->tbegfn->fm_buf->fm_egfn
+
+# gafn
+augmented: false
+ri: 0.5
+
+# random policy
+random_policy: false

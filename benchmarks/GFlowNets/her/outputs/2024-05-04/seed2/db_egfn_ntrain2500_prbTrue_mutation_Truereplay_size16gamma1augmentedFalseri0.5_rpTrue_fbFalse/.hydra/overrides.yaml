@@ -1,0 +1,5 @@
+- method=db_egfn
+- n_train_steps=2500
+- replay_sample_size=16
+- random_policy=True
+- seed=2
