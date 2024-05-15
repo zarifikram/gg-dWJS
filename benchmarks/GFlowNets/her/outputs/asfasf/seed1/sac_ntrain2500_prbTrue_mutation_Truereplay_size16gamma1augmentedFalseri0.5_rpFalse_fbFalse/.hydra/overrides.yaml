@@ -1,4 +1,0 @@
-- method=sac
-- n_train_steps=2500
-- replay_sample_size=16
-- seed=1
