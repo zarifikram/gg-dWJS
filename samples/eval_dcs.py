@@ -35,7 +35,7 @@ df = (
     if not "gz" in directory
     else pd.read_csv(directory, compression="gzip")
 )
-sample_seqs = [heavy + light for heavy, light in zip(df.fv_heavy_aho, df.fv_light_aho)]
+sample_seqs = [heavy+light for heavy, light in zip(df.fv_heavy_aho, df.fv_light_aho)]
 sample_seqs = [seq.replace("-", "") for seq in sample_seqs]
 
 k = 100  # number of samples to draw from the validation set
