@@ -10,6 +10,9 @@ args = parser.parse_args()
 # get the data
 df = pd.read_csv(args.dir)
 
+# from walkjump.model._her_classifier import HERClassifierModel
+# classifier_model = HERClassifierModel.load_from_checkpoint("../../../checkpoints/her_classifier/last.ckpt")
+
 
 # Function to calculate edit distance between two sequences
 def calculate_edit_distance(seq1, seq2):
@@ -24,19 +27,17 @@ def average_edit_distance(sequences):
     total_distance = 0
     num_pairs = 0
     
+    editdistance = []
     # Calculate total distance
     for i in range(len(sequences)):
         for j in range(i+1, len(sequences)):
-            total_distance += calculate_edit_distance(sequences[i], sequences[j])
-            num_pairs += 1
+            editdistance.append(calculate_edit_distance(sequences[i], sequences[j]))
+         
     
-    # Calculate average
-    if num_pairs > 0:
-        return total_distance / num_pairs
-    else:
-        return 0
+    return np.mean(editdistance), np.std(editdistance)
 
 seqs = df.fv_heavy_aho.to_list()
 print(f"Unique percentage: {unique_percentage(seqs)}")
-print(f"Average edit distance: {average_edit_distance(seqs)}")
+ed_mean, ed_std = average_edit_distance(seqs)
+print(f"Average edit distance: {ed_mean} +/- {ed_std}")
 

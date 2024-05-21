@@ -10,6 +10,9 @@ args = parser.parse_args()
 # get the data
 df = pd.read_csv(args.dir)
 
+# from walkjump.model._her_classifier import HERClassifierModel
+# classifier_model = HERClassifierModel.load_from_checkpoint("../checkpoints/her_classifier/last.ckpt")
+
 
 # Function to calculate edit distance between two sequences
 def calculate_edit_distance(seq1, seq2):
