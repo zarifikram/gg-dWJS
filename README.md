@@ -315,7 +315,10 @@ Below are the directories to all the checkpoints trained and used in this work.
 If you use the code and/or model checkpoints, please cite:
 
 ```
-
-Coming soon
+@inproceedings{ikram2024antibody,
+  title={Antibody sequence optimization with gradient-guided discrete walk-jump sampling},
+  author={Ikram, Zarif and Liu, Dianbo and Rahman, M Saifur},
+  booktitle={ICLR 2024 Workshop on Generative and Experimental Perspectives for Biomolecular Design}
+}
 
 ```
