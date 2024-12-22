@@ -154,3 +154,4 @@ cython_debug/
 .gitattributes
 .DS_Store
 wandb/
+outputs/
