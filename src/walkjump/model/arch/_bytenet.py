@@ -3,6 +3,7 @@ from typing import Optional
 import numpy as np
 import torch
 import torch.nn.functional as F
+import wandb
 from torch import nn
 
 from ._activations import ACTIVATION_STR_TO_TYPE
@@ -368,7 +369,7 @@ class ByteNetMLPClassifierArch(nn.Module):
 
         # now some mlp 297 -> 512 -> 256 -> 128 -> 1 using leakyReLU
         self.mlp = nn.Sequential(
-            nn.Linear(10, 512),
+            nn.Linear(60, 512),
             nn.LeakyReLU(),
             nn.Linear(512, 256),
             nn.LeakyReLU(),
@@ -379,6 +380,8 @@ class ByteNetMLPClassifierArch(nn.Module):
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # wandb.log({"input_shape": x.shape})
+        # print(f"input shape {x.shape}")
         input_mask = (x == 0).all(-1)
         e = self.embedder(x, input_mask=input_mask)
         e = self.last_norm(e)
@@ -386,6 +389,8 @@ class ByteNetMLPClassifierArch(nn.Module):
         e = self.conv(e.transpose(1,2))
 
         e = e.squeeze()
+        # wandb.log({"after conv_shape": e.shape})
+        # print(f"after conv shape: {e.shape}")
         e = self.mlp(e)
         
         return e

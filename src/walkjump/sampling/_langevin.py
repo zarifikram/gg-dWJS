@@ -56,7 +56,7 @@ def sachsetal(
             if guidance:
                 if hasattr(model, "guide_model"):
                     guide = get_label_gradient_wrt_x(model.guide_model, y, label) / pow(model.sigma, 2)
-                    psi = psi + 5 * guide
+                    psi = psi + 1 * guide
 
                 # if guide_model2 exists, use it as well
                 if hasattr(model, "guide_model2"):
@@ -90,7 +90,7 @@ def get_label_gradient_wrt_x(guide_model, x, y):
     torch.set_grad_enabled(True)
     # print(f"X shape : {x.shape}")
     x = Variable(x, requires_grad=True)
-    # c = torch.tensor([0, 1]).float().to(x.device)
+    # c = torch.tensor([0, 0, 0, 0, 1]).float().to(x.device)
     # c should have the same batch size as x
     # c = c.repeat(x.shape[0], 1)
     log_p_y = guide_model.model(x)

@@ -1,0 +1,11 @@
+defaults:
+  - _self_
+  - data: amp_labels.yaml
+  - model: her_classifier.yaml
+  - callbacks: default.yaml
+  - logger: wandb.yaml
+  - trainer: default.yaml
+  - setup: default.yaml
+
+# ckpt_path: hehehe
+dryrun: false

@@ -1,0 +1,6 @@
+_target_: walkjump.data.AMPWithLabelsDataModule
+
+train_data_path: "data/amp/train.pkl"
+validation_data_path: "data/amp/valid.pkl"
+batch_size: 64
+num_workers: 32

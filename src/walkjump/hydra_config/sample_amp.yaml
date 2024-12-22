@@ -1,0 +1,57 @@
+defaults:
+    - _self_
+    - setup: default
+
+model:
+  _target_: walkjump.cmdline.utils.instantiate_model_for_sample_mode
+  sample_mode_model_cfg:
+    model_type: denoise
+    checkpoint_path: checkpoints/amp_score_d1/last.ckpt
+    denoise_path:
+    pc_guide_path:
+    guide_path:
+    guide_path2:
+    her_guide_path: checkpoints/amp_discriminator/last.ckpt
+
+guidance: true
+langevin:
+  sigma: 1.0
+  delta: 0.5
+  lipschitz: 1.0
+  friction: 1.0
+  steps: 50
+
+# sample for MNIST
+# designs:
+#   chunksize: 8
+#   num_tokens: 2
+#   length: 784
+#   output_csv: samples.csv
+#   redesign_regions: null
+#   seeds: denovo
+#   num_samples: 100
+#   limit_seeds: 10
+
+# sample for poas
+designs:
+  chunksize: 8
+  num_tokens: 21
+  length: 60
+  output_csv: ~/clamp-gen-data/samples/sample_d1_1.csv
+  redesign_regions: null
+  seeds: denovo
+  num_samples: 100
+  limit_seeds: 10
+  
+# sample for HER2
+# designs:
+#   chunksize: 8
+#   num_tokens: 21
+#   length: 10
+#   output_csv: samples/HER2/binder_ggdwjs.csv
+#   redesign_regions: null
+#   seeds: denovo
+#   num_samples: 100
+#   limit_seeds: 10
+device: null
+dryrun: false

@@ -6,7 +6,7 @@ defaults:
 
 
 model_checkpoint:
-  dirpath: checkpoints/her_binder_score
+  dirpath: checkpoints/amp_score_d1
   filename: "{epoch}-{step}-{val_loss:.4f}"
   monitor: val_loss
 

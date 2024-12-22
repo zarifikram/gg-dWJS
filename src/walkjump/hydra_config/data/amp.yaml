@@ -1,0 +1,6 @@
+_target_: walkjump.data.AMPDataModule
+
+csv_data_path: "data/amp/d1_peptides.csv"
+
+batch_size: 64
+num_workers: 32

@@ -160,7 +160,7 @@ def get_label_gradient_wrt_x(guide_model, x, y):
     torch.set_grad_enabled(True)
     # print(f"X shape : {x.shape}")
     x = Variable(x, requires_grad=True)
-    # c = torch.tensor([0, 1]).float().to(x.device)
+    # c = torch.tensor([0, 0, 0, 0, 1]).float().to(x.device)
     # c should have the same batch size as x
     # c = c.repeat(x.shape[0], 1)
 
@@ -192,6 +192,7 @@ def walkjump(
     mask_idxs: Optional[list[int]] = None,
     chunksize: int = 1,
     guidance: bool = False,
+    alphabet = ALPHABET_AHO,
 ) -> pd.DataFrame:
     """
     Sample sequences
@@ -250,16 +251,16 @@ def walkjump(
     if mask_idxs and False: #TODO: fix this
         xhats[:, mask_idxs, :] = seed_tensor_masked
 
-    seqs = token_string_from_tensor(xhats, ALPHABET_AHO, from_logits=True)
+    seqs = token_string_from_tensor(xhats, alphabet, from_logits=True)
 
     fv_heavy_aho_sample_list = [seq[:LENGTH_FV_HEAVY_AHO] for seq in seqs]
     fv_light_aho_sample_list = [seq[LENGTH_FV_HEAVY_AHO:] for seq in seqs]
 
     fv_heavy_aho_seed_list = token_string_from_tensor(
-        seed_tensor[:, :LENGTH_FV_HEAVY_AHO], ALPHABET_AHO, from_logits=True
+        seed_tensor[:, :LENGTH_FV_HEAVY_AHO], alphabet, from_logits=True
     )
     fv_light_aho_seed_list = token_string_from_tensor(
-        seed_tensor[:, LENGTH_FV_HEAVY_AHO:], ALPHABET_AHO, from_logits=True
+        seed_tensor[:, LENGTH_FV_HEAVY_AHO:], alphabet, from_logits=True
     )
 
     return pd.DataFrame(

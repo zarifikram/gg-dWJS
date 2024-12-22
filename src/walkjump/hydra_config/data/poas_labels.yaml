@@ -1,5 +1,5 @@
 _target_: walkjump.data.PCAbWithLabelDataModule
 
-csv_data_path: "data/poas_train.csv.gz"
+csv_data_path: "data/poas_with_labels_clean.csv"
 batch_size: 64
 num_workers: 32

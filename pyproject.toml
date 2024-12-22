@@ -6,7 +6,12 @@ dynamic = ["version", "readme", "dependencies", "optional-dependencies"]
 
 [project.scripts]
 walkjump_train = "walkjump.cmdline:train"
-walkjump_sample = "walkjump.cmdline:sample_mnist"
+walkjump_train_her = "walkjump.cmdline:train_her"
+walkjump_train_her_score = "walkjump.cmdline:train_her_score"
+walkjump_train_amp = "walkjump.cmdline:train_amp"
+walkjump_train_amp_score = "walkjump.cmdline:train_amp_score"
+walkjump_sample = "walkjump.cmdline:sample"
+walkjump_sample_amp = "walkjump.cmdline:sample_amp"
 
 [build-system]
 requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
