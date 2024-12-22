@@ -16,7 +16,7 @@ PyTorch implementation for our paper
 
   
 
-Zarif Ikram, Dianbo Liu*, M Saifur Rahman.
+Zarif Ikram, Dianbo Liu*, M Saifur Rahman*.
 
   
 
@@ -295,6 +295,7 @@ Below are the directories to the datasets used in this work.
 | POAS experiment | data/poas_train_2.csv.gz |
 | hu4D5 experiment| data/HER2.csv |
 | MNIST experiment| data/binarized_mnist_[train/test/valid].amat |
+| AMP experiment| data/d1_peptides.csv |
 
   
 ## Checkpoints
@@ -309,6 +310,8 @@ Below are the directories to all the checkpoints trained and used in this work.
 |hu4D5 classifier | checkpoints/her_classifier |
 |hu4D5 score model | checkpoints/her_score |
 |hu4D5 discriminator | checkpoints/her_noised_classifier |
+|AMP discriminator | checkpoints/amp_discriminator |
+|AMP score | checkpoints/amp_score_d1 |
 
 ##  Citations
 
