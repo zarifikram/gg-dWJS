@@ -7,7 +7,7 @@ PyTorch implementation for our paper
 
 [Antibody sequence optimization with gradient-guided discrete walk-jump sampling]().
 
-Anonymous authors.
+Zarif Ikram, Dianbo Liu*, M Saifur Rahman*
 
 <!-- fig from assets -->
 ![gg-dWJS](assets/process.png)

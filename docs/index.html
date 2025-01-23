@@ -6,7 +6,7 @@
   <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
   <!-- Replace the content tag with appropriate information -->
   <meta name="description" content="Walk and jump -- but with target.">
-  <meta property="og:title" content="Antibody sequence optimization with gradient-guided discrete walk-jump sampling" />
+  <meta property="og:title" content="Gradient-guided discrete walk-jump sampling for biological sequence generation" />
   <meta property="og:description" content="Walk and jump -- but with target." />
   <meta property="og:url" content="https:zarifikram.github.io/gg-dWJS" />
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
@@ -15,7 +15,7 @@
   <meta property="og:image:height" content="630" />
 
 
-  <meta name="twitter:title" content="Antibody sequence optimization with gradient-guided discrete walk-jump sampling">
+  <meta name="twitter:title" content="Gradient-guided discrete walk-jump sampling for biological sequence generation">
   <meta name="twitter:description" content="Walk and jump -- but with target.">
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
   <meta name="twitter:image" content="static/images/image1.png">
@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  <title>Antibody sequence optimization with gradient-guided discrete walk-jump sampling</title>
+  <title>Gradient-guided discrete walk-jump sampling for biological sequence generation</title>
   <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
@@ -53,25 +53,26 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">Antibody sequence optimization with gradient-guided discrete
-              walk-jump sampling</h1>
+            <h1 class="title is-1 publication-title">Gradient-guided discrete walk-jump sampling for biological sequence
+              generation</h1>
             <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
               <span class="author-block">
-                <a href="https://zarifikram.github.io" target="_blank">Zarif Ikram</a><sup>1</sup>,</span>
+                <a href="https://zarifikram.github.io" target="_blank">Zarif Ikram</a><sup>1,2</sup>,</span>
               <span class="author-block">
-                <a href="http://dianboliu.github.io" target="_blank">Dianbo Liu</a><sup>2</sup>
+                <a href="http://dianboliu.github.io" target="_blank">Dianbo Liu</a><sup>2,*</sup>
               </span>
               <span class="author-block">
                 <a href="https://scholar.google.com/citations?user=9d52x-cAAAAJ&hl=en" target="_blank">M Saifur
-                  Rahman</a><sup>1</sup></span>
+                  Rahman</a><sup>1,*</sup></span>
             </div>
 
             <div class="is-size-5 publication-authors">
               <span class="author-block"><sup>1</sup>Department of CSE, BUET, Bangladesh <sup>2</sup>National University
                 of Singapore,
-                Singapore<br><a href="https://www.gembio.ai"> 2024 Workshop on Generative and Experimental Perspectives
-                  for Biomolecular Design</a></span>
+                Singapore<br><sup>*</sup>equal supervision<br><a href="https://www.gembio.ai"> 2024 Workshop on
+                  Generative and Experimental Perspectives
+                  for Biomolecular Design</a><br><a href="https://openreview.net/forum?id=fFVuo4SPfT&referrer=%5BAuthor%20Console%5D(%2Fgroup%3Fid%3DTMLR%2FAuthors%23your-submissions)"> Transactions on Machine Learning Research</a></span>
               <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
             </div>
 
@@ -88,19 +89,19 @@
                   </a>
                 </span>
 
-                <!-- Supplementary PDF link
+                <!-- Supplementary PDF link -->
                     <span class="link-block">
-                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
+                      <a href="static/pdfs/gg_dWJS_talk.pdf" target="_blank"
                       class="external-link button is-normal is-rounded is-dark">
                       <span class="icon">
                         <i class="fas fa-file-pdf"></i>
                       </span>
-                      <span>Supplementary</span>
+                      <span>Slides</span>
                     </a>
-                  </span> -->
+                  </span>
 
                 <!-- Github link -->
-                <!-- <span class="link-block">
+                <span class="link-block">
                   <a href="https://github.com/zarifikram/gg-dWJS" target="_blank"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
@@ -108,7 +109,7 @@
                     </span>
                     <span>Code</span>
                   </a>
-                </span> -->
+                </span>
 
                 <!-- ArXiv abstract Link -->
                 <!-- <span class="link-block">
@@ -141,17 +142,15 @@
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              For enhancing the rapid discovery and delivery of antibody-based drugs, antibody attribute optimization is
-              essential for the real-world application of therapeutic antibody sequence design. Using a generative
-              machine learning model for antibody design is a promising direction for such tasks. However, existing
-              methods struggle in balancing error accumulation, scalability, and targeted attribute optimization. In
-              this work, we propose gradient-guided discrete walk-jump sampling (gg-dWJS), a novel discrete sequence
-              generation method for antibody attribute optimization. Leveraging gradient guidance in the noisy manifold,
-              we sample from the smoothed data manifold by applying discretized Markov chain Monte Carlo (MCMC) using a
-              denoising model with the gradient-guidance from a discriminative model. This is followed by jumping to the
-              discrete data manifold using a conditional one-step denoising. Through evaluation on both discrete image
-              and antibody sequence generation tasks, we show that our method generates high-quality samples that are
-              well-optimized for specific tasks.
+              In this work, we propose gradient-guided discrete walk-jump sampling (gg-dWJS), a novel discrete sequence
+              generation method for biological sequence optimization. Leveraging gradient guidance in the noisy
+              manifold, we sample from the smoothed data manifold by applying discretized Markov chain Monte Carlo
+              (MCMC) using a denoising model with the gradient-guidance from a discriminative model. This is followed by
+              jumping to the discrete data manifold using a conditional one-step denoising. We showcase our method in
+              two different
+              modalities: discrete image and biological sequence involving antibody and peptide sequence generation
+              tasks in the single objective and multi-objective setting. Through evaluation on these tasks, we show that
+              our method generates high-quality samples that are well-optimized for specific tasks.
             </p>
           </div>
         </div>
@@ -250,13 +249,15 @@
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
-      <pre><code>@inproceedings{
-        anonymous2024antibody,
-        title={Antibody sequence optimization with gradient-guided discrete walk-jump sampling},
-        author={Anonymous},
-        booktitle={ICLR 2024 Workshop on Generative and Experimental Perspectives for Biomolecular Design},
+      <pre><code>@article{
+        ikram2024gradientguided,
+        title={Gradient-guided discrete walk-jump sampling for biological sequence generation},
+        author={Zarif Ikram and Dianbo Liu and M Saifur Rahman},
+        journal={Transactions on Machine Learning Research},
+        issn={2835-8856},
         year={2024},
-        url={https://openreview.net/forum?id=3aqm3biOjh}
+        url={https://openreview.net/forum?id=fFVuo4SPfT},
+        note={}
         }</code></pre>
     </div>
   </section>
